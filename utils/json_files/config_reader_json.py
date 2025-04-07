@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 # Construct the absolute path to config.json
 CONFIG_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'json_files',

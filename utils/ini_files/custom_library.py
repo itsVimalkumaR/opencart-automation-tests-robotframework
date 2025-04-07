@@ -1,18 +1,20 @@
 import os
 import random
 import string
-from datetime import datetime
 from configparser import ConfigParser
+from datetime import datetime
+
 import mysql.connector
-import pyautogui
 import pandas as pd
+import pyautogui
 
 
 class TestRunManager:
     def __init__(self):
         """Initialize configuration variables and read config."""
 
-        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files', 'config.ini')
+        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files',
+                                        'config.ini')
         self.connection = None
         self.cursor = None
         self.database_config = {}

@@ -1,5 +1,6 @@
-import os
 import json
+import os
+
 import urllib3
 
 # Custom library (ensure it's accessible)
@@ -7,6 +8,7 @@ from utils.ini_files.custom_library import TestRunManager
 
 before_run = TestRunManager()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class PosAPI:
     def __init__(self):
@@ -30,7 +32,8 @@ class PosAPI:
 
     def load_config_json(self):
         try:
-            config_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'configs', 'json_files', 'config.json'))
+            config_path = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), '..', 'configs', 'json_files', 'config.json'))
             with open(config_path, 'r', encoding='utf-8') as f:
                 config = json.load(f)
 
@@ -83,7 +86,8 @@ class PosAPI:
 
     def load_endpoints_json(self):
         try:
-            endpoints_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'configs', 'json_files', 'config_end_url.json'))
+            endpoints_path = os.path.abspath(
+                os.path.join(os.path.dirname(__file__), '..', 'configs', 'json_files', 'config_end_url.json'))
             with open(endpoints_path, 'r', encoding='utf-8') as f:
                 endpoints = json.load(f)
 

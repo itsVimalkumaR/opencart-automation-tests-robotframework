@@ -1,6 +1,7 @@
 import os
-import yaml
 from typing import Dict, Any
+
+import yaml
 
 
 def parse_yaml(file_path: str) -> dict[Any, Any] | None:

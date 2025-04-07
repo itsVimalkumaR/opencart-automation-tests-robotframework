@@ -1,17 +1,19 @@
-import os
 import json
+import os
 import random
 import string
 from datetime import datetime
+
 import mysql.connector
-import pyautogui
 import pandas as pd
+import pyautogui
 
 
 class TestRunManager:
     def __init__(self):
         """Initialize configuration variables and read config.json."""
-        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'json_files', 'config.json')
+        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'json_files',
+                                        'config.json')
         self.connection = None
         self.cursor = None
         self.database_config = {}

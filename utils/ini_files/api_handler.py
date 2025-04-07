@@ -1,13 +1,9 @@
 import os
+from configparser import ConfigParser
 from urllib.parse import urljoin
 
 import requests
-import random
 import urllib3
-import time
-import datetime
-from configparser import ConfigParser
-
 from pymongo import MongoClient
 
 # Custom library (ensure it's accessible)
@@ -46,7 +42,8 @@ class OpenCartAPI:
     def load_config(self):
         """Reads general configurations from 'config.ini'."""
         try:
-            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files','config.ini')
+            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files',
+                                       'config.ini')
             config_path = os.path.abspath(config_path)  # Ensure absolute path
             print("Config file path : ", config_path)
             if not os.path.exists(config_path):
@@ -136,7 +133,8 @@ class OpenCartAPI:
     def load_endpoints(self):
         """Reads API endpoint URLs from 'config_end_url.ini'."""
         try:
-            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files', 'config_end_url.ini')
+            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files',
+                                       'config_end_url.ini')
             config_path = os.path.abspath(config_path)  # Ensure absolute path
             print("Config file path : ", config_path)
             if not os.path.exists(config_path):
@@ -338,6 +336,7 @@ class OpenCartAPI:
         except Exception as e:
             print(f"Error: {e}")
             return None, None
+
 
 # Example Usage
 if __name__ == "__main__":
