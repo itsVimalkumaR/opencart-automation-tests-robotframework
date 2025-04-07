@@ -1,0 +1,17 @@
+no_data:
+  message: No data available
+
+page_titles:
+  register: "Register Account"
+  login: "Account Login"
+
+register_page:
+  personal_details:
+    first_name_placeholder: "First Name"
+    last_name_placeholder: "Last Name"
+    email_placeholder: "E-Mail"
+    telephone_placeholder: "Telephone"
+
+  password_section:
+    password_placeholder: "Password"
+    confirm_password_placeholder: "Password Confirm"

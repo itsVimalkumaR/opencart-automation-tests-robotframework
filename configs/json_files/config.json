@@ -1,0 +1,47 @@
+{
+  "environment": {
+    "environment": "Web",
+    "browser": "chrome"
+  },
+  "application": {
+    "appName": "OpenCart"
+  },
+  "mysql": {
+    "connectionName": "web_test_reports",
+    "username": "root",
+    "password": "Vimalutr16@",
+    "host": "localhost",
+    "port": 3306,
+    "database": "opencart_automation_test",
+    "executionStatusStart": "In Progress",
+    "executionStatusEnd": "Completed"
+  },
+  "mongodb": {
+    "uri": "mongodb://localhost:27017/",
+    "databaseName": "vkInfoTech",
+    "collectionName": "register"
+  },
+  "registerUsers": {
+    "firstName": "automation",
+    "lastName": "test",
+    "email": "vimalmuruges@imetanic.co",
+    "telephone": "+91 8248172040",
+    "password": "Tester123!",
+    "passwordConfirm": "Tester123!",
+    "subscribe": 0
+  },
+  "users": {
+    "signupUrl": "https://demo.opencart.com.gr/index.php?route=account/register",
+    "loginUrl": "https://demo.opencart.com.gr/index.php?route=account/login",
+    "emailAddress": "vimalmuruges@imetanic.co",
+    "password": "Tester123!"
+  },
+  "restApi": {
+    "baseUrl": "https://demo.opencart.com.gr",
+    "grantType": "password"
+  },
+  "contentType": {
+    "json": "application/json",
+    "formData": "multipart/form-data; boundary=----WebKitFormBoundaryj9MOYoxm5VB0xXtw"
+  }
+}

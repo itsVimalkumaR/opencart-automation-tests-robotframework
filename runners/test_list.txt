@@ -1,0 +1,50 @@
+## auth
+test_cases/auth/RegisterTests.robot
+test_cases/auth/LoginTests.robot
+test_cases/auth/LogoutTests.robot
+test_cases/auth/ForgotPasswordTests.robot
+
+## account
+test_cases/account/AddressBookTests.robot
+test_cases/account/ChangePasswordTests.robot
+test_cases/account/MyAccountInformationTests.robot
+test_cases/account/MyAccountTests.robot
+
+## features
+test_cases/features/GiftCertificateTests.robot
+test_cases/features/SpecialOffersTests.robot
+
+## home
+test_cases/home/HomePageTests.robot
+
+## marketing
+test_cases/marketing/AffiliateTests.robot
+test_cases/marketing/NewsletterTests.robot
+
+## orders
+test_cases/orders/DownloadsTests.robot
+test_cases/orders/OrderHistoryTests.robot
+test_cases/orders/OrderInformationTests.robot
+test_cases/orders/ProductReturnsTests.robot
+test_cases/orders/RecurringPaymentsTests.robot
+test_cases/orders/ReturnsTests.robot
+test_cases/orders/RewardPointsTests.robot
+test_cases/orders/TransactionsTests.robot
+
+## product
+test_cases/product/AddToCartTests.robot
+test_cases/product/CheckoutTests.robot
+test_cases/product/ProductCompareTests.robot
+test_cases/product/ProductDisplayTests.robot
+test_cases/product/ShoppingCartTests.robot
+test_cases/product/WishListTests.robot
+
+## search
+test_cases/search/SearchTests.robot
+
+## support
+test_cases/support/ContactUsTests.robot
+
+## ui
+test_cases/ui/CurrenciesTests.robot
+test_cases/ui/HeaderFooterMenuTests.robot

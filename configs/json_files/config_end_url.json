@@ -1,0 +1,29 @@
+{
+  "apiPost": {
+    "loginUrl": "/pos/login",
+    "registerUrl": "/pos/register",
+    "shoppingCartUrl": "/app/v1/pos/shopping_cart",
+    "addUserUrl": "/pos/add",
+    "sendEmailUrl": "/app/v1/pos/user_send_email"
+  },
+  "apiGet": {
+    "profileUrl": "/pos/profile",
+    "getCategoriesUrl": "/app/v1/pos/category?is_deleted=False",
+    "deletedCategoriesUrl": "/app/v1/pos/category?is_deleted=True",
+    "getProductsUrl": "/app/v1/pos/product?is_deleted=False",
+    "deletedProductsUrl": "/app/v1/pos/product?is_deleted=True",
+    "customersUrl": "/app/v1/pos/customer",
+    "ordersUrl": "/app/v1/pos/order",
+    "getBranchesUrl": "/app/v1/pos/branch?is_deleted=False",
+    "deletedBranchesUrl": "/app/v1/pos/branch?is_deleted=True",
+    "usersUrl": "/pos/get_user",
+    "shoppingCartsUrl": "/app/v1/pos/shopping_cart",
+    "ledgersUrl": "/pos/ledger"
+  },
+  "apiPut": {
+    "setPasswordUrl": "/pos/update/"
+  },
+  "apiDelete": {
+    "futureDeleteEndpoints": []
+  }
+}

@@ -1,0 +1,37 @@
+common:
+  browser: chrome
+  clear_field: CTRL+A+BACKSPACE
+  no_data_message: xpath=//td[.='No data available']
+
+main_page:
+  header:
+    currency_dropdown_button: xpath=//*[@id="form-currency"]/div/button
+    my_account_menu: xpath=//*[@id="top-links"]/ul/li/a[@title="My Account"]
+    register_link: xpath=//*[@id="top-links"]/ul/li[2]/ul/li/a[contains(@href,'route=account/register')]
+    login_link: xpath=//*[@id="top-links"]/ul/li[2]/ul/li/a[contains(@href,'route=account/login')]
+
+register_page:
+  personal_details_section:
+    first_name_input_field: id=input-firstname
+    last_name_input_field: id=input-lastname
+    email_input_field: id=input-email
+    telephone_input_field: id=input-telephone
+
+  password_section:
+    password_input_field: id=input-password
+    confirm_password_input_field: id=input-confirm
+
+  newsletter_section:
+    subscribe_label_text: xpath=//*[@id="content"]/form/fieldset[3]/div/label[.='Subscribe']
+    subscribe_yes_radio_button: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[1]/input
+    subscribe_no_radio_button: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[2]/input
+
+  policy_agreement_checkbox: name=agree
+  continue_registration_button: xpath=//input[@value='Continue']
+
+login_page:
+  email_input_field: id=input-email
+  password_input_field: id=input-password
+  login_submit_button: xpath=//input[@value='Login']
+
+
