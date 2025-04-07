@@ -11,7 +11,7 @@ import pandas as pd
 class TestRunManager:
     def __init__(self):
         """Initialize configuration variables and read config.json."""
-        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'config.json')
+        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'json_files', 'config.json')
         self.connection = None
         self.cursor = None
         self.database_config = {}

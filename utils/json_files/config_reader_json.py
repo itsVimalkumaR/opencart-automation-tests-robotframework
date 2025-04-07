@@ -2,9 +2,8 @@ import os
 import json
 
 # Construct the absolute path to config.json
-CONFIG_FILE_PATH = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'config.json'
-)
+CONFIG_FILE_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'json_files',
+                                'config.json')
 
 # Load JSON configuration safely
 try:
