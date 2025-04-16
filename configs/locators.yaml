@@ -3,35 +3,86 @@ common:
   clear_field: CTRL+A+BACKSPACE
   no_data_message: xpath=//td[.='No data available']
 
-main_page:
-  header:
-    currency_dropdown_button: xpath=//*[@id="form-currency"]/div/button
-    my_account_menu: xpath=//*[@id="top-links"]/ul/li/a[@title="My Account"]
-    register_link: xpath=//*[@id="top-links"]/ul/li[2]/ul/li/a[contains(@href,'route=account/register')]
-    login_link: xpath=//*[@id="top-links"]/ul/li[2]/ul/li/a[contains(@href,'route=account/login')]
+home:
+  page_header_text: xpath=//a[normalize-space()="Your Store"]
+  menu:
+    currency_dropdown:
+      selected_currency: css=#form-currency > div > button > strong
+      button: xpath=//*[@id="form-currency"]/div/button
+      euro_option: css=button[name='EUR']
+      pound_sterling_option: css=button[name='GBP']
+      us_dollar_option: css=button[name='USD']
+      phone_icon_link: css=#top-links > ul > li:nth-child(1) > a
+      phone_number_text: xpath=//span[normalize-space()='123456789']
 
-register_page:
-  personal_details_section:
+    my_account:
+      icon: css=div#top-links ul:nth-child(1) li:nth-child(2) a:nth-child(1) i:nth-child(1)
+      dropdown: xpath=//*[@id="top-links"]/ul/li/a[@title="My Account"]
+      register_link: css=a[href="https://demo.opencart.com.gr/index.php?route=account/register"]
+      login_link: css=a[href="https://demo.opencart.com.gr/index.php?route=account/login"]
+
+    wishlist:
+      icon: css=div#top-links ul:nth-child(1) li:nth-child(3) a:nth-child(1) i:nth-child(1)
+      labeltext: xpath=//*[@id="wishlist-total"]/span
+
+    shopping_cart:
+      icon: xpath=//a[@title="Shopping Cart"]//i[@class="fa fa-shopping-cart"]
+      labeltext: xpath=//span[normalize-space()="Shopping Cart"]
+
+    checkout:
+      icon: xpath=(//i[@class='fa fa-share'])[1]
+      labeltext: css=a[title="Checkout"] span[class="hidden-xs hidden-sm hidden-md"]
+
+
+register:
+  page_header_text: xpath=//*[@id='content']/h1[.='Account']
+  description: xpath=//*[@id='content']/p/text()[1]
+  login_page_link_text: xpath=//*[@id='content']/p/a
+
+  your_personal_details:
+    header_text: xpath=//*[@id="account"]/legend[text()='Your Personal Details']
     first_name_input_field: id=input-firstname
     last_name_input_field: id=input-lastname
     email_input_field: id=input-email
     telephone_input_field: id=input-telephone
 
-  password_section:
+  your_password:
     password_input_field: id=input-password
     confirm_password_input_field: id=input-confirm
 
-  newsletter_section:
-    subscribe_label_text: xpath=//*[@id="content"]/form/fieldset[3]/div/label[.='Subscribe']
+  newsletter:
+    subscribe_labeltext: xpath=//*[@id="content"]/form/fieldset[3]/div/label[.='Subscribe']
     subscribe_yes_radio_button: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[1]/input
     subscribe_no_radio_button: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[2]/input
 
-  policy_agreement_checkbox: name=agree
-  continue_registration_button: xpath=//input[@value='Continue']
+  agreement:
+    agree_description: xpath=//*[@id="content"]/form/div/div/text()[1]
+    policy_agreement_checkbox: name=agree
+    privacy_policy_link_text: xpath=//*[@id="content"]/form/div[@class='buttons']/div/a/b
+    continue_button: xpath=//input[@value='Continue']
 
-login_page:
-  email_input_field: id=input-email
-  password_input_field: id=input-password
-  login_submit_button: xpath=//input[@value='Login']
+login:
+  new_customer:
+    header_text: xpath=//*[@id='content']/div/div[1]/div/h2[.='New Customer']
+    register_text: xpath=//*[@id="content"]/div/div[1]/div/p[1]/strong[.='Register']
+    description: xpath=//*[@id="content"]/div/div[1]/div/p[2]/text()
+    continue_button: xpath=//a[normalize-space()='Continue']
 
+  returning_customer:
+    header_text: xpath=//h2[normalize-space()='Returning Customer']
+    description: xpath=//strong[normalize-space()='I am a returning customer']
+    email_address_labeltext: css=label[for='input-email']
+    email_address_textbox: id=input-email
+    password_labeltext: css=label[for='input-password']
+    password_textbox: id=input-password
+    forgotten_password_link_text: xpath=//div[@class='form-group']//a[text()='Forgotten Password']
+    login_button: css=input[value='Login']
 
+forgotten_password:
+    header_text: xpath=//h1[normalize-space()='Account']
+    description: xpath=//p[contains(text(),'Enter the e-mail address associated with your acco')]
+    section_header_text: xpath=//*[@id="content"]/form/fieldset/legend
+    email_address_labeltext: css=label[for='input-email']
+    email_address_textbox: id=input-email
+    back_button: xpath=//*[@id='content']/form/div/div[1]/a
+    continue_button: css=input[value='Continue']

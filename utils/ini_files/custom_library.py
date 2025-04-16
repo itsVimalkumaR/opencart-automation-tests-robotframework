@@ -47,21 +47,21 @@ class TestRunManager:
             print("Sections found in config:", config.sections())
 
             # Ensure section exists
-            if "MYSQL" not in config:
-                print("Error: 'MYSQL' section not found in config.ini")
+            if "mysql" not in config:
+                print("Error: 'mysql' section not found in config.ini")
                 return
 
-            # Debug: Print all options in MYSQL section
-            print("MYSQL Section Keys:", config.options("MYSQL"))
+            # Debug: Print all options in mysql section
+            print("mysql Section Keys:", config.options("mysql"))
 
             self.database_config = {
-                "username": config.get("MYSQL", "mysql_username", fallback=None),
-                "password": config.get("MYSQL", "mysql_password", fallback=None),
-                "host": config.get("MYSQL", "mysql_host", fallback=None),
-                "port": config.get("MYSQL", "mysql_port", fallback="3306"),
-                "database": config.get("MYSQL", "mysql_database", fallback=None),
-                "execution_status_start": config.get("MYSQL", "execution_status_start", fallback="STARTED"),
-                "execution_status_end": config.get("MYSQL", "execution_status_end", fallback="COMPLETED"),
+                "username": config.get("mysql", "mysql_username", fallback=None),
+                "password": config.get("mysql", "mysql_password", fallback=None),
+                "host": config.get("mysql", "mysql_host", fallback=None),
+                "port": config.get("mysql", "mysql_port", fallback="3306"),
+                "database": config.get("mysql", "mysql_database", fallback=None),
+                "execution_status_start": config.get("mysql", "execution_status_start", fallback="STARTED"),
+                "execution_status_end": config.get("mysql", "execution_status_end", fallback="COMPLETED"),
             }
 
             print("Database Config Loaded:", self.database_config)  # Debug: Print loaded config values

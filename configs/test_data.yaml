@@ -1,17 +1,79 @@
 no_data:
-  message: No data available
+  message: "No data available"
 
 page_titles:
   register: "Register Account"
   login: "Account Login"
+  forgotten_password: "Forgot Your Password?"
 
-register_page:
-  personal_details:
+home:
+  page_header_text: "Your Store"
+  menu:
+    currency_dropdown:
+      euro_option: "€ Euro"
+      pound_sterling_option: "£ Pound Sterling"
+      us_dollar_option: "$ US Dollar"
+      phone_number_text: "123456789"
+
+    my_account:
+      labeltext: "My Account"
+      register_link_text: "Register"
+      login_link_text: "Login"
+
+    wishlist:
+      labeltext: "Wish List ("
+
+    shopping_cart:
+      labeltext: "Shopping Cart"
+
+    checkout:
+      labeltext: "Checkout"
+
+register:
+  page_header_text: "Account"
+  description: "If you already have an account with us, please login at the "
+  login_page_link_text: "login page"
+
+  your_personal_details:
+    header_labeltext: "Your Personal Details"
     first_name_placeholder: "First Name"
     last_name_placeholder: "Last Name"
     email_placeholder: "E-Mail"
     telephone_placeholder: "Telephone"
 
-  password_section:
+  your_password:
     password_placeholder: "Password"
     confirm_password_placeholder: "Password Confirm"
+
+  newsletter:
+    labeltext: "Subscribe"
+    yes_labeltext: "Yes"
+    no_labeltext: "No"
+
+  agreement:
+    agree_description: "I have read and agree to the "
+    privacy_policy_link_text: "Privacy Policy"
+    continue_button: "Continue"
+
+login:
+  new_customer:
+    header_text: "New Customer"
+    register_text: "Register"
+    description: "By creating an account you will be able to shop faster, be up to date on an order's status, and keep track of the orders you have previously made."
+    continue_button: "Continue"
+
+  returning_customer:
+    header_text: "Returning Customer"
+    description: "I am a returning customer"
+    email_address_labeltext: "E-Mail Address"
+    password_labeltext: "Password"
+    forgotten_password_link_text: "Forgotten Password"
+    login_button: "Login"
+
+forgotten_password:
+    header_text: "Account"
+    description: "Enter the e-mail address associated with your account. Click submit to have a password reset link e-mailed to you."
+    section_header_text: "Your E-Mail Address"
+    email_address_labeltext: "E-Mail Address"
+    back_button: "Back"
+    continue_button: "Continue"
