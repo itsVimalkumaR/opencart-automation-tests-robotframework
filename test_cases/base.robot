@@ -1,15 +1,27 @@
 *** Settings ***
-#Suite Setup    Set Project Root Directory
+Library    BuiltIn
+Library    Collections
+Library    DateTime
+Library    ImapLibrary
+Library    JSONLibrary
+Library    OperatingSystem
+Library    Process
+Library    RequestsLibrary
+Library    SeleniumLibrary
+Library    String
 
-# Import Libraries
-Library     SeleniumLibrary
-Library     BuiltIn
-Library     OperatingSystem
+Library    ../utils/api_handler.py
+Library    ../utils/env_loader.py
 
-# Import Resource Files (Robot/Resource Files)
-Resource    ../page_objects/api_integration.resource
+Variables  ../utils/api_handler.py
+Variables  ../utils/config_parser.py
+Variables  ../utils/config_reader.py
+Variables  ../utils/custom_library.py
+
 Resource    ../page_objects/common_keywords.resource
 Resource    ../page_objects/config_parser_keywords.resource
 Resource    ../page_objects/landing_page.resource
+Resource    ../page_objects/page_title.resource
+Resource    ../page_objects/python_integration.resource
 
-# Import Variables (Python Files)
+Resource    ../page_objects/auth/RegisterTestsPO.robot

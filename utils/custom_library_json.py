@@ -1,7 +1,7 @@
+import json
 import os
 import random
 import string
-from configparser import ConfigParser
 from datetime import datetime
 
 import mysql.connector
@@ -11,72 +11,47 @@ import pyautogui
 
 class TestRunManager:
     def __init__(self):
-        """Initialize configuration variables and read config."""
-
-        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files',
-                                        'config.ini')
+        """Initialize configuration variables and read config.json."""
+        self.config_file = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'json_files',
+                                        'config.json')
         self.connection = None
         self.cursor = None
         self.database_config = {}
         self.read_config()
 
-        # Database credentials
-        self.database_username = self.database_config["username"]
-        self.database_password = self.database_config["password"]
-        self.database_host = self.database_config["host"]
-        self.database_port = self.database_config["port"]
-        self.database_name = self.database_config["database"]
-
-        # Execution status values
-        self.execution_status_start = self.database_config["execution_status_start"]
-        self.execution_status_end = self.database_config["execution_status_end"]
+        # Assign database variables
+        mysql_config = self.database_config
+        self.database_username = mysql_config.get("username")
+        self.database_password = mysql_config.get("password")
+        self.database_host = mysql_config.get("host")
+        self.database_port = mysql_config.get("port", 3306)
+        self.database_name = mysql_config.get("database")
+        self.execution_status_start = mysql_config.get("executionStatusStart", "STARTED")
+        self.execution_status_end = mysql_config.get("executionStatusEnd", "COMPLETED")
 
     def read_config(self):
-        """Reads configuration from config.ini file."""
-
+        """Reads configuration from config.json file."""
         if not os.path.exists(self.config_file):
             print(f"Config file not found: {self.config_file}")
             return
 
-        config = ConfigParser()
         try:
             with open(self.config_file, 'r', encoding='utf-8') as file:
-                config.read_file(file)  # Read file with correct encoding
+                config_data = json.load(file)
+                self.database_config = config_data.get("mysql", {})
 
-            # Debug: Print sections
-            print("Sections found in config:", config.sections())
-
-            # Ensure section exists
-            if "mysql" not in config:
-                print("Error: 'mysql' section not found in config.ini")
-                return
-
-            # Debug: Print all options in mysql section
-            print("mysql Section Keys:", config.options("mysql"))
-
-            self.database_config = {
-                "username": config.get("mysql", "mysql_username", fallback=None),
-                "password": config.get("mysql", "mysql_password", fallback=None),
-                "host": config.get("mysql", "mysql_host", fallback=None),
-                "port": config.get("mysql", "mysql_port", fallback="3306"),
-                "database": config.get("mysql", "mysql_database", fallback=None),
-                "execution_status_start": config.get("mysql", "execution_status_start", fallback="STARTED"),
-                "execution_status_end": config.get("mysql", "execution_status_end", fallback="COMPLETED"),
-            }
-
-            print("Database Config Loaded:", self.database_config)  # Debug: Print loaded config values
-
-            if not all(self.database_config.values()):
-                print("Error: Missing required database configuration values.")
+                if not self.database_config:
+                    print("Error: 'mysql' section not found in config.json")
+                else:
+                    print("Database Config Loaded:", self.database_config)
 
         except Exception as e:
             print(f"Error reading config file: {e}")
 
     def connect_db(self):
         """Establish a database connection."""
-
         if not all([self.database_username, self.database_password, self.database_host, self.database_name]):
-            print("Database credentials are missing. Check your config.ini file.")
+            print("Database credentials are missing.")
             return False
 
         try:
@@ -86,13 +61,10 @@ class TestRunManager:
                 host=self.database_host,
                 port=int(self.database_port),
                 database=self.database_name,
-                auth_plugin="mysql_native_password"  # Ensures compatibility with modern MySQL versions
+                auth_plugin="mysql_native_password"
             )
-
             self.cursor = self.connection.cursor()
             print("Database connection successful.")
-
-            # Ensure required tables exist before proceeding
             self.ensure_tables_exist()
             return True
 
@@ -212,23 +184,23 @@ class TestRunManager:
         characters = string.ascii_letters + string.digits + "!@#$&*?"
         return "".join(random.choices(characters, k=10))
 
-    @staticmethod
-    def save_user_data_to_excel(username="tester", password="&lackMan123!", business_name="Demo"):
-        """Saves user data to an Excel file."""
-
-        file_path = '../utils/user_data.xlsx'
-        new_entry = {'Business Name': business_name, 'Username': username, 'Password': password}
-
-        try:
-            df = pd.read_excel(file_path, engine='openpyxl')
-        except FileNotFoundError:
-            df = pd.DataFrame(columns=['Business Name', 'Username', 'Password'])
-
-        df = pd.concat([df, pd.DataFrame([new_entry])], ignore_index=True)
-        df.to_excel(file_path, index=False, engine='openpyxl')
-        print("User data saved successfully")
-
-        return "User data saved successfully"
+    # @staticmethod
+    # def save_user_data_to_excel(username="tester", password="&lackMan123!", business_name="Demo"):
+    #     """Saves user data to an Excel file."""
+    #
+    #     file_path = '../utils/user_data.xlsx'
+    #     new_entry = {'Business Name': business_name, 'Username': username, 'Password': password}
+    #
+    #     try:
+    #         df = pd.read_excel(file_path, engine='openpyxl')
+    #     except FileNotFoundError:
+    #         df = pd.DataFrame(columns=['Business Name', 'Username', 'Password'])
+    #
+    #     df = pd.concat([df, pd.DataFrame([new_entry])], ignore_index=True)
+    #     df.to_excel(file_path, index=False, engine='openpyxl')
+    #     print("User data saved successfully")
+    #
+    #     return "User data saved successfully"
 
     @staticmethod
     def generate_random_string(length=10, special_chars=False):

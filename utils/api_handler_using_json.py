@@ -12,7 +12,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class PosAPI:
     def __init__(self):
-        self.qa_base_url = None
+        self.base_url = None
         self.mongodb_uri = None
         self.database_name = None
         self.collection_name = None
@@ -38,7 +38,7 @@ class PosAPI:
                 config = json.load(f)
 
             # Set base URL
-            self.qa_base_url = config["restApi"].get("baseUrl")
+            self.base_url = config["restApi"].get("baseUrl")
 
             # MongoDB
             self.mongodb_uri = config["mongodb"].get("uri")

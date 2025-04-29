@@ -1,24 +1,59 @@
+# ================================
+# Standard Library Imports
+# ================================
 import os
-from configparser import ConfigParser
-from urllib.parse import urljoin
-
-import requests
+import time
+import re
+import email
+import random
 import urllib3
+import datetime
+import imaplib
+import requests
+import email.utils
+import logging
+from urllib.parse import urljoin
+from configparser import ConfigParser
+from collections import defaultdict
+
+# ================================
+# Third-Party Library Imports
+# ================================
 from pymongo import MongoClient
+from robot.api.deco import keyword
 
-# Custom library (ensure it's accessible)
+# ================================
+# Custom Libraries
+# ================================
 from custom_library import TestRunManager
+from env_loader import EnvConfigLoader
 
-before_run = TestRunManager()  # Initialize before running update
-
+# ================================
+# Initialization
+# ================================
 # Disable SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+# Set up a logger (you can configure this globally in your project)
+logger = logging.getLogger(__name__)
+
+# Initialize .env config and test manager
+env_config_loader = EnvConfigLoader()
+before_run = TestRunManager()
+
+
+# ================================
+# Factory Method
+# ================================
+def create_pos_api_instance():
+    """Factory method to create and return a PosAPI instance"""
+    return OpenCartAPI()
 
 
 class OpenCartAPI:
     def __init__(self):
         """Initialize configuration variables."""
-        self.qa_base_url = None
+        self.base_url = None
         self.prod_base_url = None
         self.localhost_base_url = None
         self.mongodb_uri = None
@@ -31,7 +66,7 @@ class OpenCartAPI:
         self.user_data = None
 
         self.reg_user = {}
-        self.laundry_credentials = {}
+        self.login_credentials = {}
         self.restaurant_credentials = {}
         self.api_endpoints = {}
 
@@ -42,8 +77,7 @@ class OpenCartAPI:
     def load_config(self):
         """Reads general configurations from 'config.ini'."""
         try:
-            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files',
-                                       'config.ini')
+            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'config.ini')
             config_path = os.path.abspath(config_path)  # Ensure absolute path
             print("Config file path : ", config_path)
             if not os.path.exists(config_path):
@@ -56,85 +90,81 @@ class OpenCartAPI:
                 config.read_file(config_file)
 
             # Base URLs
-            self.qa_base_url = config.get('REST_API', 'qa_base_url', fallback=None)
-            self.prod_base_url = config.get('REST_API', 'prod_base_url', fallback=None)
-            self.localhost_base_url = config.get('REST_API', 'lh_base_url', fallback=None)
+            self.base_url = config.get('rest_api', 'base_url', fallback=None)
 
             # Database Configs
-            self.mongodb_uri = config.get('MONGODB', 'mongodb_uri', fallback=None)
-            self.database_name = config.get('MONGODB', 'database_name', fallback=None)
-            self.collection_name = config.get('MONGODB', 'collection_name', fallback=None)
+            self.mongodb_uri = config.get('mongodb', 'uri', fallback=None)
+            self.database_name = config.get('mongodb', 'database_name', fallback=None)
+            self.collection_name = config.get('mongodb', 'collection_name', fallback=None)
 
             # Auth & Content Type
-            self.set_password_url = config.get('REST_API', 'qa_base_url', fallback=None)
-            self.grant_type = config.get('REST_API', 'grant_type', fallback=None)
-            self.content_type = config.get('CONTENT_TYPE', 'json', fallback=None)
-            self.form_data_content_type = config.get('CONTENT_TYPE', 'form_data', fallback=None)
+            self.grant_type = config.get('rest_api', 'grant_type', fallback=None)
+            self.content_type = config.get('content_type', 'json', fallback=None)
+            self.form_data_content_type = config.get('content_type', 'form_data', fallback=None)
 
             # Registered User Info
             self.reg_user = {
-                "username": config.get('REGISTER_USERS', 'username', fallback=None),
-                "name": config.get('REGISTER_USERS', 'name', fallback=None),
-                "business_name": config.get('REGISTER_USERS', 'organization_name', fallback=None),
-                "dob": config.get('REGISTER_USERS', 'date_of_birth', fallback=None),
-                "phone_number": config.get('REGISTER_USERS', 'phone_number', fallback=None),
-                "address": config.get('REGISTER_USERS', 'address', fallback=None),
-                "password": config.get('REGISTER_USERS', 'password', fallback=None),
-                "email_id": config.get('REGISTER_USERS', 'email_id', fallback=None),
-                "state": config.get('REGISTER_USERS', 'state', fallback=None),
-                "country": config.get('REGISTER_USERS', 'country', fallback=None),
-                "pincode": config.get('REGISTER_USERS', 'pincode', fallback=None),
+                "first_name": config.get('register_users', 'first_name', fallback=None),
+                "last_name": config.get('register_users', 'last_name', fallback=None),
+                "email": config.get('register_users', 'email', fallback=None),
+                "telephone": config.get('register_users', 'telephone', fallback=None),
+                "password": config.get('register_users', 'password', fallback=None),
+                "password_confirm": config.get('register_users', 'password_confirm', fallback=None),
             }
 
-            self.user_data = {
-                "user_name": config.get('REGISTER_USERS', 'username', fallback=None),
-                "name": config.get('REGISTER_USERS', 'name', fallback=None),
-                "organization_name": config.get('REGISTER_USERS', 'organization_name', fallback=None),
-                "organization_arabic_name": config.get('REGISTER_USERS', 'organization_arabic_name', fallback=None),
-                "email_id": config.get('REGISTER_USERS', 'email_id', fallback=None),
-                "date_of_birth": config.get('REGISTER_USERS', 'date_of_birth', fallback=None),
-                "phone_number": config.get('REGISTER_USERS', 'phone_number', fallback=None),
-                "address_line_1": config.get('REGISTER_USERS', 'address', fallback=None),
-                "organization_location": config.get('REGISTER_USERS', 'organization_location', fallback=None),
-                "state": config.get('REGISTER_USERS', 'state', fallback=None),
-                "country": config.get('REGISTER_USERS', 'country', fallback=None),
-                "pincode": config.get('REGISTER_USERS', 'pincode', fallback=None),
-                "business_type": config.get('REGISTER_USERS', 'business_type', fallback=None),
-                "role": config.get('REGISTER_USERS', 'role', fallback=None),
-                "filename": ""
-            }
-            print(self.user_data)
+            # self.user_data = {
+            #     "user_name": config.get('register_users', 'email_address', fallback=None),
+            #     "name": config.get('register_users', 'name', fallback=None),
+            #     "organization_name": config.get('register_users', 'organization_name', fallback=None),
+            #     "organization_arabic_name": config.get('register_users', 'organization_arabic_name', fallback=None),
+            #     "email_id": config.get('register_users', 'email_id', fallback=None),
+            #     "date_of_birth": config.get('register_users', 'date_of_birth', fallback=None),
+            #     "phone_number": config.get('register_users', 'phone_number', fallback=None),
+            #     "address_line_1": config.get('register_users', 'address', fallback=None),
+            #     "organization_location": config.get('register_users', 'organization_location', fallback=None),
+            #     "state": config.get('register_users', 'state', fallback=None),
+            #     "country": config.get('register_users', 'country', fallback=None),
+            #     "pincode": config.get('register_users', 'pincode', fallback=None),
+            #     "business_type": config.get('register_users', 'business_type', fallback=None),
+            #     "role": config.get('register_users', 'role', fallback=None),
+            #     "filename": ""
+            # }
+            # print(self.user_data)
+
             # Credentials
-            self.laundry_credentials = {
-                "username": config.get('USERS', 'qa_laundry_username', fallback=None),
-                "password": config.get('USERS', 'qa_laundry_password', fallback=None),
+            self.login_credentials = {
+                "email_address": config.get('users', 'email_address', fallback=None),
+                "password": config.get('users', 'password', fallback=None),
             }
 
-            self.restaurant_credentials = {
-                "username": config.get('USERS', 'qa_restaurant_username', fallback=None),
-                "password": config.get('USERS', 'qa_restaurant_password', fallback=None),
-            }
-
-            if not self.qa_base_url:
-                print("Base URL : ", self.qa_base_url)
-                raise ValueError("Missing QA Base URL in config.")
+            if not self.base_url:
+                print("Base URL : ", self.base_url)
+                raise ValueError("Missing Base URL in config.")
 
             print("Config loaded successfully.")
 
+            # Return something meaningful
+            return {
+                "status_code": 200,
+                "message": "Config loaded"
+            }
+
         except FileNotFoundError as fnf_err:
             print(f"Config File Error: {fnf_err}")
+            return str(fnf_err)
 
         except UnicodeDecodeError as unicode_err:
             print(f"Encoding Error: {unicode_err} - Ensure config.ini is saved as UTF-8.")
+            return str(unicode_err)
 
         except Exception as e:
             print(f"Unexpected Error loading config: {e}")
+            return str(e)
 
     def load_endpoints(self):
         """Reads API endpoint URLs from 'config_end_url.ini'."""
         try:
-            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'ini_files',
-                                       'config_end_url.ini')
+            config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'configs', 'config_end_url.ini')
             config_path = os.path.abspath(config_path)  # Ensure absolute path
             print("Config file path : ", config_path)
             if not os.path.exists(config_path):
@@ -178,23 +208,33 @@ class OpenCartAPI:
 
             print("Config loaded successfully.")
 
+            # Return something meaningful
+            return {
+                "status_code": 200,
+                "message": "Config End URL loaded"
+            }
+
+
         except FileNotFoundError as fnf_err:
             print(f"Config File Error: {fnf_err}")
+            return str(fnf_err)
 
         except UnicodeDecodeError as unicode_err:
             print(f"Encoding Error: {unicode_err} - Ensure config.ini is saved as UTF-8.")
+            return str(unicode_err)
 
         except Exception as e:
             print(f"Unexpected Error loading config: {e}")
+            return str(e)
 
-    def post(self, end_url, username, password):
+    def post(self, end_url, email_address, password):
         try:
-            # url = self.qa_base_url + end_url
-            full_url = urljoin(self.qa_base_url, end_url)
+            # url = self.base_url + end_url
+            full_url = urljoin(self.base_url, end_url)
             print("POST Request URL:", full_url)
 
             payload = {
-                'user_name': username,
+                'user_name': email_address,
                 'password': password
             }
             response = requests.post(full_url, data=payload, verify=False)
@@ -216,8 +256,8 @@ class OpenCartAPI:
 
     def get(self, end_url, headers=None):
         try:
-            # url = self.qa_base_url + end_url
-            full_url = urljoin(self.qa_base_url, end_url)
+            # url = self.base_url + end_url
+            full_url = urljoin(self.base_url, end_url)
             print("GET Request URL:", full_url)
             headers = headers or {'Content-Type': self.content_type}
             response = requests.get(full_url, headers=headers, verify=False)
@@ -230,8 +270,8 @@ class OpenCartAPI:
     def put(self, end_url, password):
         try:
             payload = {'password': password}
-            # url = self.qa_base_url + end_url
-            full_url = urljoin(self.qa_base_url, end_url)
+            # url = self.base_url + end_url
+            full_url = urljoin(self.base_url, end_url)
             print("PUT Request URL:", full_url)
             response = requests.put(full_url, json=payload, verify=False)
             response.raise_for_status()
@@ -270,7 +310,7 @@ class OpenCartAPI:
     def post_api(self, end_url, payload, headers=None, files=None):
         """Send a POST request to the given endpoint with error handling."""
         try:
-            url = self.qa_base_url + end_url
+            url = self.base_url + end_url
             headers = headers or {"Content-Type": self.content_type}
 
             print(f"POST Request to {url} with Payload: {payload}")
@@ -287,18 +327,18 @@ class OpenCartAPI:
             print("Request Error:", e)
             return None
 
-    def update_username_in_db(self, old_username, new_username):
-        """Update the new username in the database"""
+    def update_email_address_in_db(self, old_email_address, new_email_address):
+        """Update the new email_address in the database"""
         try:
-            # Example API call to update username in the database
-            update_url = self.qa_base_url + self.api_endpoints["POST"]["register"]
-            payload = {"old_username": old_username, "new_username": new_username}
+            # Example API call to update email_address in the database
+            update_url = self.base_url + self.api_endpoints["POST"]["register"]
+            payload = {"old_email_address": old_email_address, "new_email_address": new_email_address}
             headers = {"Content-Type": self.content_type}
 
             response = requests.post(update_url, json=payload, headers=headers, verify=False)
 
             if response.ok:
-                print(f"Username successfully updated in DB: {old_username} → {new_username}")
+                print(f"email_address successfully updated in DB: {old_email_address} → {new_email_address}")
                 return True
 
             error_details = response.json().get("error", "Unknown error")
@@ -309,22 +349,22 @@ class OpenCartAPI:
             print(f"Error updating DB: {e}")
             return False
 
-    def retrieve_user_from_db(self, username):
+    def retrieve_user_from_db(self, email_address):
         """Retrieves user details from MongoDB."""
         try:
             client = MongoClient(self.mongodb_uri)
             db = client[self.database_name]
             collection = db[self.collection_name]
-            user_data = collection.find_one({"user_name": username})
+            user_data = collection.find_one({"user_name": email_address})
             return user_data.get("user_name") if user_data else None
         except Exception as e:
             print(f"Error retrieving user: {e}")
             return None
 
-    def login_api_credentials_pass(self, username, password):
+    def login_api_credentials_pass(self, email_address, password):
         try:
-            payload = {"user_name": username, "password": password}
-            response = requests.post(self.qa_base_url + self.api_endpoints["POST"]["login"], json=payload, verify=False)
+            payload = {"user_name": email_address, "password": password}
+            response = requests.post(self.base_url + self.api_endpoints["POST"]["login"], json=payload, verify=False)
             if response.status_code != 200:
                 print("Login failed.")
                 return response.status_code, None
@@ -336,6 +376,64 @@ class OpenCartAPI:
         except Exception as e:
             print(f"Error: {e}")
             return None, None
+
+    @keyword("Get Set password Link From Email")
+    def get_set_password_link(self, email_addr, password, imap_server="imap.gmail.com",
+                              expected_subject="Set your new password"):
+        mail = None
+        try:
+            mail = imaplib.IMAP4_SSL(imap_server)
+            mail.login(email_addr, password)
+            mail.select("inbox")
+
+            result, data = mail.search(None, '(FROM "noreply@imetanic.co")')
+            email_ids = data[0].split()
+            if not email_ids:
+                return None
+
+            emails_with_dates = []
+            for eid in email_ids:
+                result, msg_data = mail.fetch(eid, '(BODY[HEADER.FIELDS (DATE)])')
+                raw_date = msg_data[0][1].decode().strip().replace('Date: ', '')
+                email_date = email.utils.parsedate_to_datetime(raw_date)
+                emails_with_dates.append((eid, email_date))
+
+            sorted_emails = sorted(emails_with_dates, key=lambda x: x[1], reverse=True)
+
+            for email_id, _ in sorted_emails:
+                result, data = mail.fetch(email_id, '(RFC822)')
+                raw_email = data[0][1]
+                msg = email.message_from_bytes(raw_email)
+
+                subject = msg.get("Subject", "").strip()
+                if subject != expected_subject:
+                    continue
+
+                body = ""
+                if msg.is_multipart():
+                    for part in msg.walk():
+                        if part.get_content_type() == "text/html":
+                            body = part.get_payload(decode=True).decode()
+                            break
+                else:
+                    body = msg.get_payload(decode=True).decode()
+
+                match = re.search(r'https://demo\.imetanic\.com/imetanic/setpassword/[^\s"]+', body)
+                if match:
+                    set_password_link = match.group(0)
+                    print(f"Latest valid Set password Link: {set_password_link}")
+                    is_link_active = self.is_link_active(set_password_link)
+                    assert is_link_active == True
+                    return set_password_link
+
+            return None
+
+        except Exception as e:
+            print(f"Error fetching email: {e}")
+            return None
+        finally:
+            if mail:
+                mail.logout()
 
 
 # Example Usage

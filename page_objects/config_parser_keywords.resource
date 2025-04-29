@@ -3,7 +3,7 @@ Documentation     Parses network topology and test configurations for execution
 Library           String
 Library           OperatingSystem
 Library           ../utils/config_parser.py
-Variables         ../utils/ini_files/config_reader.py
+Variables         ../utils/config_reader.py
 Resource          ../test_cases/base.robot
 
 *** Keywords ***

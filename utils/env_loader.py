@@ -12,13 +12,12 @@ class EnvConfigLoader:
     def get_email_config():
         """Returns email and password as a dictionary"""
         return {
-            "email": os.getenv("email"),
-            "email_password": os.getenv("email_password"),
-            "email_app_password": os.getenv("email_app_password")
+            "email": os.getenv("REGISTER_EMAIL"),
+            "email_app_password": os.getenv("REGISTER_EMAIL_APP_PASSWORD")
         }
 
     @staticmethod
-    def get_value(key: str, default=None):
+    def get_value_from_env(key: str, default=None):
         """Generic getter for any env variable"""
         return os.getenv(key, default)
 
@@ -28,7 +27,7 @@ class EnvConfigLoader:
 
     @property
     def email_password(self):
-        return os.getenv("email_password")
+        return os.getenv("REGISTER_EMAIL_APP_PASSWORD")
 
 
 if __name__ == "__main__":

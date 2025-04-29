@@ -1,10 +1,27 @@
-no_data:
-  message: "No data available"
+common:
+  no_data_message: "No data available"
+
+warning_messages:
+  register:
+    your_personal_details:
+      firstname: "First Name must be between 1 and 32 characters!"
+      lastname: "Last Name must be between 1 and 32 characters!"
+      email: "E-Mail Address does not appear to be valid!"
+      telephone: "Telephone must be between 3 and 32 characters!"
+
+    your_password:
+      password: "Password must be between 4 and 20 characters!"
+
+    agreement:
+      policy_agreement: " Warning: You must agree to the Privacy Policy!"
 
 page_titles:
+  home: "Your Store"
   register: "Register Account"
   login: "Account Login"
   forgotten_password: "Forgot Your Password?"
+  account_success: "Your Account Has Been Created!"
+  logout: "Your Account Has Been Created!"
 
 home:
   page_header_text: "Your Store"
@@ -17,8 +34,8 @@ home:
 
     my_account:
       labeltext: "My Account"
-      register_link_text: "Register"
-      login_link_text: "Login"
+      register_option_text: "Register"
+      login_option_text: "Login"
 
     wishlist:
       labeltext: "Wish List ("
@@ -46,14 +63,23 @@ register:
     confirm_password_placeholder: "Password Confirm"
 
   newsletter:
-    labeltext: "Subscribe"
-    yes_labeltext: "Yes"
-    no_labeltext: "No"
+    subscribe_labeltext: "Subscribe"
+    subscribe_yes_labeltext: "Yes"
+    subscribe_no_labeltext: "No"
 
   agreement:
     agree_description: "I have read and agree to the "
     privacy_policy_link_text: "Privacy Policy"
     continue_button: "Continue"
+
+register_success:
+  account_labeltext: "Account"
+  success_message: "Congratulations! Your new account has been successfully created!"
+  member_privileges_description: "You can now take advantage of member privileges to enhance your online shopping experience with us."
+  description_message: "If you have ANY questions about the operation of this online shop, please e-mail the store owner."
+  email_confirmation_description: "A confirmation has been sent to the provided e-mail address. If you have not received it within the hour, please contact us."
+  contact_us_link_text: "contact us"
+  continue_button: "Continue"
 
 login:
   new_customer:
@@ -70,6 +96,12 @@ login:
     forgotten_password_link_text: "Forgotten Password"
     login_button: "Login"
 
+logout:
+  account_label_text: "Account"
+  logged_off_description: "You have been logged off your account. It is now safe to leave the computer."
+  shopping_cart_description: "Your shopping cart has been saved, the items inside it will be restored whenever you log back into your account."
+  continue_button: "Continue"
+
 forgotten_password:
     header_text: "Account"
     description: "Enter the e-mail address associated with your account. Click submit to have a password reset link e-mailed to you."
@@ -77,3 +109,4 @@ forgotten_password:
     email_address_labeltext: "E-Mail Address"
     back_button: "Back"
     continue_button: "Continue"
+

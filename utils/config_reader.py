@@ -3,7 +3,7 @@ from configparser import ConfigParser
 
 # Construct path to the config.ini file
 base_dir = os.path.dirname(os.path.abspath(__file__))
-CONFIG_FILE_PATH = os.path.join(base_dir, '..', '..', 'configs', 'ini_files', 'config.ini')
+CONFIG_FILE_PATH = os.path.join(base_dir, '..', 'configs', 'config.ini')
 CONFIG_FILE_PATH = os.path.normpath(CONFIG_FILE_PATH)
 
 print("CONFIG_FILE_PATH:", CONFIG_FILE_PATH)
@@ -32,6 +32,10 @@ class ConfigReader:
     @staticmethod
     def browser():
         return config.get('environment', 'browser')
+
+    @staticmethod
+    def incognito_mode():
+        return config.get('environment', 'incognito_mode')
 
     # REST API URL
     @staticmethod

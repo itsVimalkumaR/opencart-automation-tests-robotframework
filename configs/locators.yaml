@@ -3,6 +3,20 @@ common:
   clear_field: CTRL+A+BACKSPACE
   no_data_message: xpath=//td[.='No data available']
 
+warning_messages:
+  register:
+    your_personal_details:
+      firstname: xpath=//input[@id='input-firstname']//following-sibling::div
+      lastname: xpath=//input[@id='input-lastname']//following-sibling::div
+      email: css=input#input-email + div
+      telephone: css=input#input-telephone+ div
+
+    your_password:
+      password: css=input#input-password+ div
+
+    agreement:
+      policy_agreement: css=div#account-register > div[class$='alert-dismissible']
+
 home:
   page_header_text: xpath=//a[normalize-space()="Your Store"]
   menu:
@@ -18,8 +32,12 @@ home:
     my_account:
       icon: css=div#top-links ul:nth-child(1) li:nth-child(2) a:nth-child(1) i:nth-child(1)
       dropdown: xpath=//*[@id="top-links"]/ul/li/a[@title="My Account"]
-      register_link: css=a[href="https://demo.opencart.com.gr/index.php?route=account/register"]
-      login_link: css=a[href="https://demo.opencart.com.gr/index.php?route=account/login"]
+      register_option: css=a[href="https://demo.opencart.com.gr/index.php?route=account/register"]
+      login_option: css=a[href="https://demo.opencart.com.gr/index.php?route=account/login"]
+      my_account_option: css=ul.dropdown-menu.dropdown-menu-right>li>a[href*='/account']
+      transactions_option: css=ul.dropdown-menu.dropdown-menu-right>li>a[href*='transaction']
+      download_option: css=ul.dropdown-menu.dropdown-menu-right>li>a[href*='download']
+      logout_option: css=ul.dropdown-menu.dropdown-menu-right>li>a[href*='logout']
 
     wishlist:
       icon: css=div#top-links ul:nth-child(1) li:nth-child(3) a:nth-child(1) i:nth-child(1)
@@ -32,7 +50,6 @@ home:
     checkout:
       icon: xpath=(//i[@class='fa fa-share'])[1]
       labeltext: css=a[title="Checkout"] span[class="hidden-xs hidden-sm hidden-md"]
-
 
 register:
   page_header_text: xpath=//*[@id='content']/h1[.='Account']
@@ -52,7 +69,9 @@ register:
 
   newsletter:
     subscribe_labeltext: xpath=//*[@id="content"]/form/fieldset[3]/div/label[.='Subscribe']
+    subscribe_yes_labeltext: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[1]
     subscribe_yes_radio_button: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[1]/input
+    subscribe_no_labeltext: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[2]
     subscribe_no_radio_button: xpath=//*[@id="content"]/form/fieldset[3]/div/div/label[2]/input
 
   agreement:
@@ -60,6 +79,15 @@ register:
     policy_agreement_checkbox: name=agree
     privacy_policy_link_text: xpath=//*[@id="content"]/form/div[@class='buttons']/div/a/b
     continue_button: xpath=//input[@value='Continue']
+
+register_success:
+  account_labeltext: css=#content > h1
+  success_message: css=#content > p:nth-child(2)
+  member_privileges_description: css=#content > p:nth-child(3)
+  description_message: xpath=//*[@id='content']/p[contains(., 'please e-mail the store owner')]
+  email_confirmation_description: xpath=//*[@id="content"]/p[contains(text(),'provided e-mail address')]
+  contact_us_link_text: css=#content > p:nth-child(5) > a
+  continue_button: xpath=//*[@id='content']/div/div/a[contains(@href, 'route=account/account')]
 
 login:
   new_customer:
@@ -86,3 +114,9 @@ forgotten_password:
     email_address_textbox: id=input-email
     back_button: xpath=//*[@id='content']/form/div/div[1]/a
     continue_button: css=input[value='Continue']
+
+logout:
+  account_label_text: css=div[id="content"] h1
+  logged_off_description: css=div#content p:nth-child(2)
+  shopping_cart_description: css=div#content p:nth-child(3)
+  continue_button: css=div.buttons>div>a[href*='/home']
