@@ -1,0 +1,76 @@
+{
+    "result": {
+        "CustomerEmail": "",
+        "CustomerName": "Vimal",
+        "CustomerPhoneNo": "06182025",
+        "Customerid": "6852dd4303b90bb797ac3a48",
+        "Finalamount": 190,
+        "OrderStatus": "Delivered",
+        "Orderdate": "2025-06-18",
+        "Orderid": "0618211025",
+        "Ordertime": "21:11",
+        "Products": [
+            {
+                "amount": 17,
+                "arabicword": "\u062c\u064a\u0646\u0632",
+                "productId": "6852a0cf4880469bcc290caf",
+                "productName": "Jeans [DCN]",
+                "quantity": 1,
+                "totalPrice": 17
+            },
+            {
+                "amount": 12,
+                "arabicword": "\u0642\u0645\u064a\u0635",
+                "productId": "68529fe6658ec4e34dad738e",
+                "productName": "Shirt [DCN]",
+                "quantity": 1,
+                "totalPrice": 12
+            },
+            {
+                "amount": 14,
+                "arabicword": "\u0628\u0627\u0646\u062a",
+                "productId": "6852a0274880469bcc290cad",
+                "productName": "Pant [DCU]",
+                "quantity": 1,
+                "totalPrice": 14
+            },
+            {
+                "amount": 37,
+                "arabicword": "\u0633\u062a\u0631\u0629",
+                "productId": "6852a07a4880469bcc290cae",
+                "productName": "Jacket [PL]",
+                "quantity": 4,
+                "totalPrice": 148
+            }
+        ],
+        "RemainingAmount": 109.5,
+        "_id": {
+            "$oid": "6852dde9e48f885287aef0a2"
+        },
+        "cancel_order_amount": "0",
+        "discount": "1",
+        "modifiedOn": "18-06-2025 15:42:15",
+        "organization_id": "68529ede0128e2eda5cd0630",
+        "organization_name": "Test Engineer",
+        "outstanding_balance": 140.45,
+        "paymentHistory": [
+            {
+                "Paymentmethod": "Cash",
+                "ReceivedAmount": "40.05"
+            },
+            {
+                "Paymentmethod": "Cash",
+                "ReceivedAmount": 40.45
+            }
+        ],
+        "payments": [
+            {
+                "Paymentmethod": "Cash",
+                "ReceivedAmount": "40.45"
+            }
+        ],
+        "totalAmount": 191.0,
+        "totalQuantity": 7,
+        "total_outstanding_balance": 149.95
+    }
+}
